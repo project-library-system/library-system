@@ -1,0 +1,16 @@
+FROM node:20-alpine
+WORKDIR /app
+
+# 1. Copia package files
+COPY package*.json ./
+
+# 2. Instala TODAS dependências (inclui @nestjs/cli)
+RUN npm ci
+
+# 3. Copia código
+COPY . .
+
+EXPOSE 8080
+
+# 5. DESENVOLVIMENTO: nest start --watch
+CMD ["npm", "run", "start:dev"]
