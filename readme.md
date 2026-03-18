@@ -12,11 +12,12 @@ Criação do arquivo Prisma/Schema
 
 Crie as variaveis do banco de dados na .env dentro da raiz
 
-DATABASE_PASSWORD=exemplo
-DATABASE_USER=exemplo
-DATABASE_HOST=localhost
-DATABASE_PORT=5432
-DATABASE_NAME=exeplo
+DB_PASSWORD=admin
+DB_USER=admin
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=library_system
+DATABASE_URL=postgresql://admin:admin@localhost:5432/library_system?schema=public
 
 
 Suba o docker com o comando:
