@@ -10,6 +10,9 @@ RUN npm ci
 # 3. Copia código
 COPY . .
 
+RUN npx prisma generate  // ← gera o client dentro do container
+
+
 EXPOSE 8080
 
 # 5. DESENVOLVIMENTO: nest start --watch

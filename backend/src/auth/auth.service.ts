@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import {
   BadRequestException,
   ConflictException,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -18,6 +19,7 @@ import {
 @Injectable()
 export class AuthService {
   constructor(
+    @Inject('UserRepository')
     private userPrismaRepository: UserPrismaRepository,
     private jwtService: JwtService,
   ) {}

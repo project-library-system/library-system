@@ -9,7 +9,7 @@ import {
   IsEmail,
   IsEnum,
 } from 'class-validator';
-import { UserRole } from 'generated/prisma';
+import { UserRole } from '@prisma/client';
 
 import type { Role } from 'src/enum/role';
 

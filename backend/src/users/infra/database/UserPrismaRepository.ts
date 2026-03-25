@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import { UpdateUserInput, User } from '../../domain/entities/User';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { UserRepository } from '../../domain/repositories/UserRepository';
 import { Injectable } from '@nestjs/common';
-import { Prisma, UserRole } from 'generated/prisma';
+import { Prisma, UserRole } from '@prisma/client';
 
 @Injectable()
 export class UserPrismaRepository implements UserRepository {
