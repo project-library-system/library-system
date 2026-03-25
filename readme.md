@@ -7,6 +7,9 @@ Instalação das dependencias do prisma dentro da raiz
 Inicializar 
 - npx prisma
 
+Alterações no Prisma Rode
+- npx prisma generate
+
 Criação do arquivo Prisma/Schema
 - npx prisma init --datasource-provider postgresql --output ../generated/prisma
 
