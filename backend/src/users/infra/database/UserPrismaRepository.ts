@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 import { UpdateUserInput, User } from '../../domain/entities/User';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { UserRepository } from '../../domain/repositories/UserRepository';

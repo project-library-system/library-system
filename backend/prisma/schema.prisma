@@ -24,6 +24,44 @@ model User {
   role          UserRole @default(USER)
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
+
+  loans         Loan[]
+}
+
+model Book {
+  id        String   @id @default(uuid()) @db.Uuid
+  isbn      String   @unique
+  name      String
+  author    String
+  publisher String
+
+  exemplars Exemplar[]
+}
+
+model Exemplar {
+  id         String   @id @default(uuid()) @db.Uuid
+  book_id    String   @db.Uuid
+  book       Book     @relation(fields: [book_id], references: [id])
+  code       String   @unique
+  status     String
+  created_at DateTime @default(now())
+
+  loans      Loan[]
+}
+
+model Loan {
+  id            String   @id @default(uuid()) @db.Uuid
+  exemplar_id   String   @db.Uuid
+  exemplar      Exemplar @relation(fields: [exemplar_id], references: [id])
+  user_id       String   @db.Uuid
+  user          User     @relation(fields: [user_id], references: [id])
+  loan_date     DateTime @default(now())
+  maturity_date DateTime
+  return_date   DateTime?
+  status        String
+
+  @@index([exemplar_id])
+  @@index([user_id])
 }
 
 
