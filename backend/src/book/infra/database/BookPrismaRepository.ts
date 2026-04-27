@@ -1,7 +1,7 @@
-import { Injectable } from "@nestjs/common";
 import { BookRepository } from "src/book/domain/repositories/BookRepository";
 import { PrismaService } from "src/prisma/prisma.service";
 import { Book, CreateBookProps, UpdateBookProps } from "src/book/domain/entities/Book";
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class BookPrismaRepository implements BookRepository {
