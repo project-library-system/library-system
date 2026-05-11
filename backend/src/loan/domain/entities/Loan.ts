@@ -1,4 +1,5 @@
 import { randomUUID } from "crypto";
+import { LoanStatus } from "src/enum/LoanStatus";
 
 export type CreateLoanProps = {
     exemplary_id: string;
@@ -6,7 +7,7 @@ export type CreateLoanProps = {
     loan_date: Date;
     due_date: Date;
     return_date: Date | null;
-    status: string;
+    status: LoanStatus;
 }
 
 export type UpdateLoanProps = {
@@ -15,7 +16,7 @@ export type UpdateLoanProps = {
     loan_date?: Date;
     due_date?: Date;
     return_date?: Date | null;
-    status?: string;
+    status?: LoanStatus;
 }
 
 export class Loan {
@@ -26,7 +27,7 @@ export class Loan {
         public loan_date: Date,
         public due_date: Date,
         public return_date: Date | null,
-        public status: string,
+        public status: LoanStatus,
     ) {}
 
     static create(props: CreateLoanProps): Loan {

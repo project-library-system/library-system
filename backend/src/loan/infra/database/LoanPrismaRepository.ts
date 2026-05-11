@@ -3,6 +3,7 @@ import { LoanRepository } from "src/loan/domain/repositories/LoanRepository";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateLoanProps, Loan, UpdateLoanProps } from "src/loan/domain/entities/Loan";
 import { Loan as PrismaLoan } from "@prisma/client";
+import { LoanStatus } from "src/enum/LoanStatus";
 
 @Injectable()
 export class LoanPrismaRepository implements LoanRepository {
@@ -18,7 +19,7 @@ export class LoanPrismaRepository implements LoanRepository {
             prismaLoan.loan_date,
             prismaLoan.maturity_date,
             prismaLoan.return_date,
-            prismaLoan.status,
+            LoanStatus[prismaLoan.status],
         );
     }
 
