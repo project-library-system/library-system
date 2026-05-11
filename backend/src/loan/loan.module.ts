@@ -9,9 +9,11 @@ import { FindByUserIdUseCase } from "./application/use-cases/FindByUserId";
 import { UpdateLoanUseCase } from "./application/use-cases/Update";
 import { DeleteLoanUseCase } from "./application/use-cases/Delete";
 import { PrismaService } from "src/prisma/prisma.service";
+import { ExemplaryModule } from "src/exemplary/exemplary.module";
+import { UsersModule } from "src/users/users.module";
 
 @Module({
-    imports: [],
+    imports: [ExemplaryModule, UsersModule],
     controllers: [LoanController],
     providers: [
         PrismaService,

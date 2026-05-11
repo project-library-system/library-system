@@ -1,4 +1,5 @@
-import { IsString, IsUUID } from "class-validator";
+import { IsString, IsUUID, IsEnum } from "class-validator";
+import { ExemplaryStatus } from "src/enum/ExemplaryStatus";
 
 export class CreateExemplaryDto {
     @IsUUID()
@@ -7,6 +8,6 @@ export class CreateExemplaryDto {
     @IsString()
     code!: string;
 
-    @IsString()
-    status!: string;
+    @IsEnum(ExemplaryStatus)
+    status!: ExemplaryStatus;
 }

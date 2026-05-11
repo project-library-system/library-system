@@ -38,6 +38,11 @@ import { ExemplaryController } from "./controllers/exemplary.controller";
             useFactory: (repo: ExemplaryPrismaRepository) => new DeleteExemplaryUseCase(repo),
             inject: [ExemplaryPrismaRepository],
         },
+        {
+            provide: 'ExemplaryRepository',
+            useClass: ExemplaryPrismaRepository,
+        }
     ],
+    exports: ['ExemplaryRepository']
 })
 export class ExemplaryModule {}

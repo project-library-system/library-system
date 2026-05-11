@@ -1,4 +1,5 @@
-import { IsString, IsUUID, IsOptional } from "class-validator";
+import { IsString, IsUUID, IsOptional, IsEnum } from "class-validator";
+import { ExemplaryStatus } from "src/enum/ExemplaryStatus";
 
 export class UpdateExemplaryDto {
     @IsUUID()
@@ -9,7 +10,7 @@ export class UpdateExemplaryDto {
     @IsOptional()
     code?: string;
 
-    @IsString()
+    @IsEnum(ExemplaryStatus)
     @IsOptional()
-    status?: string;
+    status?: ExemplaryStatus;
 }

@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { ExemplaryRepository } from "src/exemplary/domain/repositories/ExemplaryRepository";
 import { Exemplary, CreateExemplaryProps, UpdateExemplaryProps } from "src/exemplary/domain/entities/Exemplary";
 import { PrismaService } from "src/prisma/prisma.service";
+import { ExemplaryStatus } from "src/enum/ExemplaryStatus";
 
 @Injectable()
 export class ExemplaryPrismaRepository implements ExemplaryRepository {
@@ -26,7 +27,7 @@ export class ExemplaryPrismaRepository implements ExemplaryRepository {
             created.id,
             created.book_id,
             created.code,
-            created.status,
+            ExemplaryStatus[created.status as keyof typeof ExemplaryStatus],
             created.created_at
         );
     }
@@ -41,7 +42,7 @@ export class ExemplaryPrismaRepository implements ExemplaryRepository {
             updated.id,
             updated.book_id,
             updated.code,
-            updated.status,
+            ExemplaryStatus[updated.status as keyof typeof ExemplaryStatus],
             updated.created_at
         );
     }
@@ -59,7 +60,7 @@ export class ExemplaryPrismaRepository implements ExemplaryRepository {
             exemplary.id,
             exemplary.book_id,
             exemplary.code,
-            exemplary.status,
+            ExemplaryStatus[exemplary.status as keyof typeof ExemplaryStatus],
             exemplary.created_at
         );
     }
@@ -68,7 +69,7 @@ export class ExemplaryPrismaRepository implements ExemplaryRepository {
         const exemplaries = await this.prisma.exemplar.findMany();
 
         return exemplaries.map(
-            (e) => new Exemplary(e.id, e.book_id, e.code, e.status, e.created_at)
+            (e) => new Exemplary(e.id, e.book_id, e.code, ExemplaryStatus[e.status as keyof typeof ExemplaryStatus], e.created_at)
         );
     }
 }

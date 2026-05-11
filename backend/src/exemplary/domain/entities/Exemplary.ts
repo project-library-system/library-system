@@ -1,15 +1,16 @@
 import { randomUUID } from "crypto";
+import { ExemplaryStatus } from "src/enum/ExemplaryStatus";
 
 export type CreateExemplaryProps = {
   book_id: string;
   code: string;
-  status: string;
+  status: ExemplaryStatus;
 };
 
 export type UpdateExemplaryProps = {
   book_id?: string;
   code?: string;
-  status?: string;
+  status?: ExemplaryStatus;
 };
 
 export class Exemplary {
@@ -17,7 +18,7 @@ export class Exemplary {
     public readonly id: string,
     public book_id: string,
     public code: string,
-    public status: string,
+    public status: ExemplaryStatus,
     public readonly created_at: Date
   ) {}
 

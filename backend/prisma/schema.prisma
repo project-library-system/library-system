@@ -24,6 +24,13 @@ enum LoanStatus {
   OVERDUE
 }
 
+enum ExemplaryStatus {
+  AVAILABLE
+  LOANED
+  MAINTENANCE
+  LOST
+}
+
 model User {
   id            String   @id @default(uuid()) @db.Uuid
   name          String
@@ -51,7 +58,7 @@ model Exemplar {
   book_id    String   @db.Uuid
   book       Book     @relation(fields: [book_id], references: [id])
   code       String   @unique
-  status     String
+  status     ExemplaryStatus
   created_at DateTime @default(now())
 
   loans      Loan[]
