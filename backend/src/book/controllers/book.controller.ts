@@ -7,6 +7,8 @@ import { UpdateBookUseCase } from "src/book/application/use-cases/Update";
 import { DeleteBookUseCase } from "src/book/application/use-cases/Delete";
 import { CreateBookDto } from "../dto/CreateBookDto";
 import { UpdateBookDto } from "../dto/UpdateBookDto";
+import { Roles } from "src/auth/decorators/roles.decorator";
+import { Role } from "src/enum/role";
 
 @Controller('book')
 export class BookController {
@@ -19,32 +21,35 @@ export class BookController {
         private readonly deleteBookUseCase: DeleteBookUseCase,
     ) {}
 
+    @Roles(Role.admin)
     @Post()
     async create(@Body() data: CreateBookDto) {
         return this.createBookUseCase.execute(data);
     }
 
+    @Roles(Role.admin, Role.user)
     @Get()
     async findAll() {
         return this.findAllBooksUseCase.execute();
     }
 
+    @Roles(Role.admin, Role.user)
     @Get('isbn/:isbn')
     async findByIsbn(@Param('isbn') isbn: string) {
         return this.findByIsbnBooksUseCase.execute(isbn);
     }
 
-    @Get(':id')
+    @Roles(Role.admin, Role.user)
     async findById(@Param('id') id: string) {
         return this.findByIdBooksUseCase.execute(id);
     }
 
-    @Put(':id')
+    @Roles(Role.admin)
     async update(@Param('id') id: string, @Body() data: UpdateBookDto) {
         return this.updateBookUseCase.execute(id, data);
     }
 
-    @Delete(':id')
+    @Roles(Role.admin)
     async remove(@Param('id') id: string) {
         return this.deleteBookUseCase.execute(id);
     }

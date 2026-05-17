@@ -6,6 +6,8 @@ import { UpdateExemplaryUseCase } from "src/exemplary/application/use-cases/Upda
 import { DeleteExemplaryUseCase } from "src/exemplary/application/use-cases/Delete";
 import { CreateExemplaryDto } from "../dto/CreateExemplaryDto";
 import { UpdateExemplaryDto } from "../dto/UpdateExemplaryDto";
+import { Roles } from "src/auth/decorators/roles.decorator";
+import { Role } from "src/enum/role";
 
 @Controller('exemplary')
 export class ExemplaryController {
@@ -17,26 +19,31 @@ export class ExemplaryController {
         private readonly deleteExemplaryUseCase: DeleteExemplaryUseCase,
     ) {}
 
+    @Roles(Role.admin)
     @Post()
     async create(@Body() data: CreateExemplaryDto) {
         return this.createExemplaryUseCase.execute(data);
     }
 
+    @Roles(Role.admin, Role.user)
     @Get()
     async findAll() {
         return this.findAllExemplaryUseCase.execute();
     }
 
+    @Roles(Role.admin, Role.user)
     @Get(':id')
     async findById(@Param('id') id: string) {
         return this.findByIdExemplaryUseCase.execute(id);
     }
 
+    @Roles(Role.admin)
     @Put(':id')
     async update(@Param('id') id: string, @Body() data: UpdateExemplaryDto) {
         return this.updateExemplaryUseCase.execute(id, data);
     }
 
+    @Roles(Role.admin)
     @Delete(':id')
     async remove(@Param('id') id: string) {
         return this.deleteExemplaryUseCase.execute(id);
