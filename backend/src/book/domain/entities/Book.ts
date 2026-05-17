@@ -3,6 +3,9 @@ export type CreateBookProps = {
     name: string;
     author: string;
     publisher: string;
+    genre: string;
+    year: number;
+    image: string;
 }
 
 export type UpdateBookProps = {
@@ -10,6 +13,9 @@ export type UpdateBookProps = {
     name?: string;
     author?: string;
     publisher?: string;
+    genre?: string;
+    year?: number;
+    image?: string;
 }
 
 export class Book {
@@ -19,6 +25,9 @@ export class Book {
     public name: string,
     public author: string,
     public publisher: string,
+    public genre: string,
+    public year: number,
+    public image: string,
   ) {}
 
   static create(props: CreateBookProps): Book {
@@ -28,6 +37,9 @@ export class Book {
         props.name,
         props.author,
         props.publisher,
+        props.genre,
+        props.year,
+        props.image,
     )
   }
 

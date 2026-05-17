@@ -49,6 +49,10 @@ model Book {
   name      String
   author    String
   publisher String
+  genre     String
+  year      Int
+  image     String
+
 
   exemplars Exemplar[]
 }

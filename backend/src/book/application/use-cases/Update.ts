@@ -18,6 +18,9 @@ export class UpdateBookUseCase {
         data.name = data.name || book.name;
         data.author = data.author || book.author;
         data.publisher = data.publisher || book.publisher;
+        data.genre = data.genre || book.genre;
+        data.year = data.year || book.year;
+        data.image = data.image || book.image;
 
         return this.bookRepository.update(id, data);
     }

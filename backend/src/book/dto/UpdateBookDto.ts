@@ -1,4 +1,4 @@
-import { IsString, IsOptional } from "class-validator";
+import { IsString, IsOptional, IsNumber } from "class-validator";
 
 export class UpdateBookDto {
     @IsString()
@@ -16,4 +16,16 @@ export class UpdateBookDto {
     @IsString()
     @IsOptional()
     publisher?: string;
+
+    @IsString()
+    @IsOptional()
+    genre?: string;
+
+    @IsNumber()
+    @IsOptional()
+    year?: number;
+
+    @IsString()
+    @IsOptional()
+    image?: string;
 }
