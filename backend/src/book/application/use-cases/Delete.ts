@@ -1,7 +1,9 @@
+import { Inject } from "@nestjs/common";
 import { BookRepository } from "src/book/domain/repositories/BookRepository";
 
 export class DeleteBookUseCase {
     constructor(
+        @Inject('BookRepository')
         private readonly bookRepository: BookRepository
     ) {}
 

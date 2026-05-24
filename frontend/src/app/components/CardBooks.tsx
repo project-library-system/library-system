@@ -1,57 +1,49 @@
+'use client';
+
+import type { BookCatalogItem } from '@/types';
+
 interface CardBooksProps {
-  title: string;
-  author: string;
-  genre: string;
-  year: number;
-  image: string;
+  book: BookCatalogItem;
+  onRequest: (bookId: string) => void;
+  requesting?: boolean;
 }
 
-export default function CardBooks({ title, author, genre, year, image }: CardBooksProps) {
+export default function CardBooks({ book, onRequest, requesting }: CardBooksProps) {
   return (
-    <div className="w-72 bg-white rounded-2xl shadow-md overflow-hidden hover:scale-105 transition duration-300 mt-10">
-
-      {/* Imagem */}
-      <div className="bg-gray-100 flex justify-center items-center p-4">
+    <div className="w-64 bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
+      {/* Cover */}
+      <div className="bg-slate-100 flex justify-center items-center h-60 overflow-hidden">
         <img
-          src={image}
-          alt={title}
-          className="h-56 object-contain"
+          src={book.image || '/placeholder-book.png'}
+          alt={book.name}
+          className="h-full w-full object-cover"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src =
+              'https://placehold.co/256x240/e2e8f0/94a3b8?text=Livro';
+          }}
         />
       </div>
 
-      {/* Conteúdo */}
-      <div className="p-5">
+      {/* Info */}
+      <div className="p-4 flex flex-col flex-1">
+        <span className="text-xs font-semibold text-blue-500 uppercase tracking-wide">{book.genre}</span>
+        <h2 className="text-base font-bold text-slate-800 mt-1 line-clamp-2 leading-snug">{book.name}</h2>
+        <p className="text-sm text-slate-500 mt-1">{book.author}</p>
+        <p className="text-xs text-slate-400 mt-1">{book.publisher} · {book.year}</p>
 
-        <h2 className="text-xl font-bold text-gray-800">
-          Dom Casmurro
-        </h2>
-
-        <div className="mt-3 flex flex-col gap-1 text-sm text-gray-600">
-          <p>
-            <span className="font-semibold">
-              Autor:
-            </span>{" "}
-            Machado de Assis
-          </p>
-
-          <p>
-            <span className="font-semibold">
-              Gênero:
-            </span>{" "}
-            Romance
-          </p>
-
-          <p>
-            <span className="font-semibold">
-              Ano:
-            </span>{" "}
-            1899
-          </p>
-        </div>
-
-        {/* Botão */}
-        <button className="w-full mt-5 bg-blue-500 hover:bg-blue-600 transition text-white font-semibold py-3 rounded-xl">
-          Agendar
+        <button
+          type="button"
+          disabled={requesting}
+          onClick={() => onRequest(book.id)}
+          className="mt-auto pt-4"
+        >
+          <span className={`block w-full text-center text-sm font-semibold py-2.5 rounded-xl transition-all ${
+            requesting
+              ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+              : 'bg-blue-500 hover:bg-blue-600 text-white shadow-sm hover:shadow-md'
+          }`}>
+            {requesting ? 'Solicitando...' : 'Solicitar Empréstimo'}
+          </span>
         </button>
       </div>
     </div>

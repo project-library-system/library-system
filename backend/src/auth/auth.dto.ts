@@ -8,10 +8,9 @@ import {
   MaxLength,
   IsEmail,
   IsEnum,
+  IsOptional,
 } from 'class-validator';
 import { UserRole } from '@prisma/client';
-
-import type { Role } from 'src/enum/role';
 
 export class SignInResponseDto {
   @IsNotEmpty()
@@ -21,6 +20,10 @@ export class SignInResponseDto {
   @IsNotEmpty()
   @IsString()
   expiresIn!: string;
+
+  @IsNotEmpty()
+  @IsEnum(UserRole)
+  role!: UserRole;
 }
 
 export class SignInRequestDto {
@@ -33,7 +36,7 @@ export class SignInRequestDto {
   @IsString()
   @MinLength(8, { message: 'A senha deve ter no mínimo 8 caracteres.' })
   @MaxLength(20, { message: 'A senha deve ter no máximo 20 caracteres.' })
-  password_hash!: string;
+  password!: string;
 }
 
 export class SignUpResponseDto {
@@ -51,9 +54,8 @@ export class SignUpResponseDto {
   email!: string;
 
   @IsNotEmpty()
-  @IsString()
   @IsEnum(UserRole)
-  role!: Role;
+  role!: UserRole;
 }
 
 export class SignUpRequestDto {
@@ -67,15 +69,14 @@ export class SignUpRequestDto {
   @IsString()
   @MinLength(8, { message: 'A senha deve ter no mínimo 8 caracteres.' })
   @MaxLength(20, { message: 'A senha deve ter no máximo 20 caracteres.' })
-  password_hash!: string;
+  password!: string;
 
   @IsNotEmpty()
   @IsString()
   @IsEmail()
   email!: string;
 
-  @IsNotEmpty()
-  @IsString()
+  @IsOptional()
   @IsEnum(UserRole)
-  role!: Role;
+  role?: UserRole;
 }

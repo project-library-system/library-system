@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import { IsOptional, IsString, IsEmail, IsEnum } from 'class-validator';
-import { Role } from 'src/enum/role';
+import { UserRole } from '@prisma/client';
 
 export class UpdateUserDto {
   @IsString()
@@ -15,9 +15,9 @@ export class UpdateUserDto {
 
   @IsString()
   @IsOptional()
-  password_hash?: string;
+  password?: string;
 
-  @IsEnum(Role)
+  @IsEnum(UserRole)
   @IsOptional()
-  role?: Role;
+  role?: UserRole;
 }

@@ -12,7 +12,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { IS_PUBLIC_KEY } from './decorators/public.decorator';
 import { ROLES_KEY } from './decorators/roles.decorator';
-import { Role } from 'src/enum/role';
+import { UserRole } from '@prisma/client';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -41,7 +41,7 @@ export class AuthGuard implements CanActivate {
       request['user'] = payload;
 
       // Verifica roles exigidas pela rota
-      const requiredRoles = this.reflector.getAllAndOverride<Role[]>(
+      const requiredRoles = this.reflector.getAllAndOverride<UserRole[]>(
         ROLES_KEY,
         [context.getHandler(), context.getClass()],
       );

@@ -2,7 +2,7 @@ import { UpdateUserInput, User } from '../../domain/entities/User';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { UserRepository } from '../../domain/repositories/UserRepository';
 import { Injectable } from '@nestjs/common';
-import { Prisma, UserRole } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class UserPrismaRepository implements UserRepository {
@@ -14,7 +14,7 @@ export class UserPrismaRepository implements UserRepository {
       name: user.name,
       email: user.email,
       password_hash: user.password_hash,
-      role: user.role as unknown as UserRole,
+      role: user.role,
     };
     const createdUser = await this.prisma.user.create({ data });
 
@@ -47,7 +47,7 @@ export class UserPrismaRepository implements UserRepository {
         name: data.name,
         email: data.email,
         password_hash: data.password_hash,
-        role: data.role as unknown as UserRole,
+        role: data.role,
       },
     });
 

@@ -8,7 +8,7 @@ import { DeleteBookUseCase } from "src/book/application/use-cases/Delete";
 import { CreateBookDto } from "../dto/CreateBookDto";
 import { UpdateBookDto } from "../dto/UpdateBookDto";
 import { Roles } from "src/auth/decorators/roles.decorator";
-import { Role } from "src/enum/role";
+import { UserRole } from "@prisma/client";
 
 @Controller('book')
 export class BookController {
@@ -21,35 +21,35 @@ export class BookController {
         private readonly deleteBookUseCase: DeleteBookUseCase,
     ) {}
 
-    @Roles(Role.admin)
+    @Roles(UserRole.ADMIN)
     @Post()
     async create(@Body() data: CreateBookDto) {
         return this.createBookUseCase.execute(data);
     }
 
-    @Roles(Role.admin, Role.user)
+    @Roles(UserRole.ADMIN, UserRole.USER)
     @Get()
     async findAll() {
         return this.findAllBooksUseCase.execute();
     }
 
-    @Roles(Role.admin, Role.user)
+    @Roles(UserRole.ADMIN, UserRole.USER)
     @Get('isbn/:isbn')
     async findByIsbn(@Param('isbn') isbn: string) {
         return this.findByIsbnBooksUseCase.execute(isbn);
     }
 
-    @Roles(Role.admin, Role.user)
+    @Roles(UserRole.ADMIN, UserRole.USER)
     async findById(@Param('id') id: string) {
         return this.findByIdBooksUseCase.execute(id);
     }
 
-    @Roles(Role.admin)
+    @Roles(UserRole.ADMIN)
     async update(@Param('id') id: string, @Body() data: UpdateBookDto) {
         return this.updateBookUseCase.execute(id, data);
     }
 
-    @Roles(Role.admin)
+    @Roles(UserRole.ADMIN)
     async remove(@Param('id') id: string) {
         return this.deleteBookUseCase.execute(id);
     }

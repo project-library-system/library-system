@@ -8,7 +8,7 @@ import { UpdateLoanUseCase } from "../application/use-cases/Update";
 import { DeleteLoanUseCase } from "../application/use-cases/Delete";
 import { CreateLoanDto, UpdateLoanDto } from "../dto/loan.dto";
 import { Roles } from "src/auth/decorators/roles.decorator";
-import { Role } from "src/enum/role";
+import { UserRole } from "@prisma/client";
 
 @Controller('loan')
 export class LoanController {
@@ -22,51 +22,51 @@ export class LoanController {
         private readonly deleteLoanUseCase: DeleteLoanUseCase,
     ) {}
 
-    @Roles(Role.admin, Role.user)
+    @Roles(UserRole.ADMIN, UserRole.USER)
     @Post()
     async create(@Body() createLoanDto: CreateLoanDto) {
         return this.createLoanUseCase.execute(createLoanDto);
     }
 
-    @Roles(Role.admin)
+    @Roles(UserRole.ADMIN)
     @Get()
     async findAll() {
         return this.findAllLoanUseCase.execute();
     }
 
 
-    @Roles(Role.admin)
+    @Roles(UserRole.ADMIN)
     @Get(':id')
     async findById(@Param('id') id: string) {
         return this.findByIdLoanUseCase.execute(id);
     }
 
-    @Roles(Role.admin)
+    @Roles(UserRole.ADMIN)
     @Get('exemplary/:exemplary_id')
     async findByExemplaryId(@Param('exemplary_id') exemplary_id: string) {
         return this.findByExemplaryUseCase.execute(exemplary_id);
     }
 
-    @Roles(Role.admin, Role.user)
+    @Roles(UserRole.ADMIN, UserRole.USER)
     @Get('user/me')
     async findMyLoans(@Req() req) {
         const userId = req.user.sub;
         return this.findByUserIdUseCase.execute(userId);
     }
 
-    @Roles(Role.admin)
+    @Roles(UserRole.ADMIN)
     @Get('user/:user_id')
     async findByUserId(@Param('user_id') user_id: string) {
         return this.findByUserIdUseCase.execute(user_id);
     }
 
-    @Roles(Role.admin)
+    @Roles(UserRole.ADMIN)
     @Put(':id')
     async update(@Param('id') id: string, @Body() updateLoanDto: UpdateLoanDto) {
         return this.updateLoanUseCase.execute(id, updateLoanDto);
     }
 
-    @Roles(Role.admin)
+    @Roles(UserRole.ADMIN)
     @Delete(':id')
     async delete(@Param('id') id: string) {
         return this.deleteLoanUseCase.execute(id);

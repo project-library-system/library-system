@@ -1,8 +1,10 @@
+import { Inject } from "@nestjs/common";
 import { Book, UpdateBookProps } from "src/book/domain/entities/Book";
 import { BookRepository } from "src/book/domain/repositories/BookRepository";
 
 export class UpdateBookUseCase {
     constructor(
+        @Inject('BookRepository')
         private readonly bookRepository: BookRepository
     ) {}
 

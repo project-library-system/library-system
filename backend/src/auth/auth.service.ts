@@ -1,7 +1,6 @@
 import { UserPrismaRepository } from '../users/infra/database/UserPrismaRepository';
 import { JwtService } from '@nestjs/jwt';
 import {
-  BadRequestException,
   ConflictException,
   Inject,
   Injectable,
@@ -15,6 +14,7 @@ import {
   SignUpRequestDto,
   SignUpResponseDto,
 } from './auth.dto';
+import { UserRole } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -26,15 +26,21 @@ export class AuthService {
 
   async signIn(data: SignInRequestDto): Promise<SignInResponseDto> {
     const user = await this.userPrismaRepository.findByEmail(data.email);
-    if (user?.password_hash !== data.password_hash) {
-      throw new UnauthorizedException();
+
+    if (!user) {
+      throw new UnauthorizedException('E-mail ou senha inválidos.');
     }
+
+    const passwordMatches = await bcrypt.compare(data.password, user.password_hash);
+    if (!passwordMatches) {
+      throw new UnauthorizedException('E-mail ou senha inválidos.');
+    }
+
     const payload = { sub: user.id, username: user.email, role: user.role };
     return {
-      // 💡 Here the JWT secret key that's used for signing the payload
-      // is the key that was passsed in the JwtModule
       access_token: await this.jwtService.signAsync(payload),
       expiresIn: '15min',
+      role: user.role as UserRole,
     };
   }
 
@@ -45,19 +51,14 @@ export class AuthService {
       throw new ConflictException('Já existe uma conta com este e-mail.');
     }
 
-    if (data.password_hash.length < 8 || data.password_hash.length > 20) {
-      throw new BadRequestException(
-        'A senha deve ter entre 8 e 20 caracteres.',
-      );
-    }
-
-    const password_hash = await bcrypt.hash(data.password_hash, 10);
+    const password_hash = await bcrypt.hash(data.password, 10);
+    const role = data.role ?? UserRole.USER;
 
     const newUser = User.create({
       name: data.name,
       email: data.email,
       password_hash,
-      role: data.role,
+      role,
     });
 
     const createdUser = await this.userPrismaRepository.create(newUser);
@@ -66,7 +67,7 @@ export class AuthService {
       id: createdUser.id,
       name: createdUser.name,
       email: createdUser.email,
-      role: createdUser.role,
+      role: createdUser.role as unknown as UserRole,
     };
   }
 }

@@ -34,7 +34,9 @@ export class BookPrismaRepository implements BookRepository {
 
     async findByIsbn(isbn: string): Promise<Book | null> {
         const book = await this.prisma.book.findUnique({ where: { isbn } });
+
         if (!book) return null;
+
         return new Book(book.id, book.isbn, book.name, book.author, book.publisher, book.genre, book.year, book.image);
     }
 
