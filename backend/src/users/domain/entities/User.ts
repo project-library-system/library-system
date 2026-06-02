@@ -5,6 +5,7 @@ export type CreateUserProps = {
   email: string;
   password_hash: string;
   role?: UserRole;
+  count_loans?: number;
 };
 
 export interface CreateUserInput {
@@ -12,6 +13,7 @@ export interface CreateUserInput {
   email: string;
   password_hash: string;
   role?: UserRole;
+  count_loans?: number;
 }
 
 export interface UpdateUserInput {
@@ -19,6 +21,7 @@ export interface UpdateUserInput {
   email?: string;
   password_hash?: string;
   role?: UserRole;
+  count_loans?: number;
 }
 
 export class User {
@@ -28,6 +31,7 @@ export class User {
     public email: string,
     public password_hash: string,
     public role: UserRole,
+    public count_loans: number,
   ) {}
 
   static create(props: CreateUserProps): User {
@@ -37,6 +41,7 @@ export class User {
       props.email,
       props.password_hash,
       props.role ?? UserRole.USER,
+      props.count_loans ?? 0,
     );
   }
 }

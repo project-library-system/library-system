@@ -39,6 +39,7 @@ model User {
   role          UserRole @default(USER)
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
+  count_loans   Int @default(0)
 
   loans         Loan[]
 }
@@ -60,7 +61,7 @@ model Book {
 model Exemplar {
   id         String   @id @default(uuid()) @db.Uuid
   book_id    String   @db.Uuid
-  book       Book     @relation(fields: [book_id], references: [id])
+  book       Book     @relation(fields: [book_id], references: [id], onDelete: Cascade)
   code       String   @unique
   status     ExemplaryStatus
   created_at DateTime @default(now())
@@ -71,9 +72,9 @@ model Exemplar {
 model Loan {
   id            String   @id @default(uuid()) @db.Uuid
   exemplar_id   String   @db.Uuid
-  exemplar      Exemplar @relation(fields: [exemplar_id], references: [id])
+  exemplar      Exemplar @relation(fields: [exemplar_id], references: [id], onDelete: Cascade)
   user_id       String   @db.Uuid
-  user          User     @relation(fields: [user_id], references: [id])
+  user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   loan_date     DateTime @default(now())
   maturity_date DateTime
   return_date   DateTime?

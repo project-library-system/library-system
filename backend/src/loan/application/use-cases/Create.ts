@@ -3,7 +3,7 @@ import { LoanRepository } from "src/loan/domain/repositories/LoanRepository";
 import { Loan, CreateLoanProps } from "src/loan/domain/entities/Loan";
 import { ExemplaryRepository } from "src/exemplary/domain/repositories/ExemplaryRepository";
 import { UserRepository } from "src/users/domain/repositories/UserRepository";
-import { ExemplaryNotAvailableException, InvalidLoanDateException, UserNotFoundException } from "src/loan/domain/exceptions/LoanExceptions";
+import { ExemplaryNotAvailableException, InvalidLoanDateException, UserNotFoundException, LoanLimitExceededException } from "src/loan/domain/exceptions/LoanExceptions";
 
 @Injectable()
 export class CreateLoanUseCase {
@@ -21,6 +21,11 @@ export class CreateLoanUseCase {
         const isUser = await this.userRepository.findById(data.user_id);
         if (!isUser) {
             throw new UserNotFoundException(data.user_id);
+        }
+
+        const activeCount = await this.repository.countActiveByUserId(data.user_id);
+        if (activeCount >= 2) {
+            throw new LoanLimitExceededException();
         }
 
         const isExemplary = await this.exemplaryRepository.findById(data.exemplary_id);

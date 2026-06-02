@@ -3,7 +3,7 @@
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { Plus, Search, Trash2 } from 'lucide-react';
 import { api, ApiError } from '@/lib/api';
-import type { Book } from '@/types';
+import type { Book, Exemplar } from '@/types';
 
 const emptyForm = {
   isbn: '',
@@ -17,6 +17,7 @@ const emptyForm = {
 
 export default function AdminLivrosPage() {
   const [books, setBooks] = useState<Book[]>([]);
+  const [exemplars, setExemplars] = useState<Exemplar[]>([]);
   const [form, setForm] = useState(emptyForm);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -29,8 +30,12 @@ export default function AdminLivrosPage() {
     setLoading(true);
     setError('');
     try {
-      const data = await api.getBooks();
-      setBooks(data);
+      const [booksData, exemplarsData] = await Promise.all([
+        api.getBooks(),
+        api.getExemplars(),
+      ]);
+      setBooks(booksData);
+      setExemplars(exemplarsData);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Erro ao listar livros.');
     } finally {
@@ -154,28 +159,43 @@ export default function AdminLivrosPage() {
             <p className="text-slate-400 text-sm text-center py-8">Nenhum livro encontrado.</p>
           ) : (
             <ul className="divide-y divide-slate-50 max-h-[32rem] overflow-y-auto">
-              {filtered.map((b) => (
-                <li key={b.id} className="py-3 flex gap-3 items-center">
-                  <img
-                    src={b.image}
-                    alt=""
-                    className="w-10 h-14 object-cover bg-slate-100 rounded-lg shrink-0"
-                    onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/40x56/e2e8f0/94a3b8?text=📖'; }}
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-slate-800 text-sm truncate">{b.name}</p>
-                    <p className="text-xs text-slate-500">{b.author}</p>
-                    <p className="text-xs text-slate-400">{b.genre} · {b.year}</p>
-                  </div>
-                  <button
-                    onClick={() => handleDelete(b.id)}
-                    disabled={deletingId === b.id}
-                    className="p-2 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 transition-all disabled:opacity-50"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </li>
-              ))}
+              {filtered.map((b) => {
+                const bookExemplarsCount = exemplars.filter((ex) => ex.book_id === b.id).length;
+
+                return (
+                  <li key={b.id} className="py-3 flex gap-3 items-center">
+                    <img
+                      src={b.image}
+                      alt=""
+                      className={`w-10 h-14 object-cover bg-slate-100 rounded-lg shrink-0 transition-all ${
+                        bookExemplarsCount === 0 ? 'blur-[1.5px] grayscale opacity-70' : ''
+                      }`}
+                      onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/40x56/e2e8f0/94a3b8?text=📖'; }}
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-slate-800 text-sm truncate">{b.name}</p>
+                      <p className="text-xs text-slate-500">{b.author}</p>
+                      <p className="text-xs text-slate-400 mt-0.5 flex items-center gap-1.5 flex-wrap">
+                        <span>{b.genre} · {b.year}</span>
+                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full shrink-0 ${
+                          bookExemplarsCount === 0 
+                            ? 'bg-red-50 text-red-600 border border-red-100' 
+                            : 'bg-slate-100 text-slate-600 border border-slate-200'
+                        }`}>
+                          {bookExemplarsCount} {bookExemplarsCount === 1 ? 'unidade' : 'unidades'}
+                        </span>
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => handleDelete(b.id)}
+                      disabled={deletingId === b.id}
+                      className="p-2 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 transition-all disabled:opacity-50"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </section>

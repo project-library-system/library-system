@@ -23,6 +23,32 @@ export class LoanPrismaRepository implements LoanRepository {
         );
     }
 
+    private async updateUserLoanCount(user_id: string): Promise<void> {
+        const count = await this.prisma.loan.count({
+            where: {
+                user_id,
+                status: {
+                    in: ['PENDING', 'APPROVED', 'OVERDUE']
+                }
+            }
+        });
+        await this.prisma.user.update({
+            where: { id: user_id },
+            data: { count_loans: count }
+        });
+    }
+
+    async countActiveByUserId(user_id: string): Promise<number> {
+        return this.prisma.loan.count({
+            where: {
+                user_id,
+                status: {
+                    in: ['PENDING', 'APPROVED', 'OVERDUE']
+                }
+            }
+        });
+    }
+
     async create(data: CreateLoanProps): Promise<Loan> {
         const prismaLoan = await this.prisma.loan.create({
             data: {
@@ -35,6 +61,7 @@ export class LoanPrismaRepository implements LoanRepository {
             },
         });
 
+        await this.updateUserLoanCount(data.user_id);
         return this.toDomain(prismaLoan);
     }
 
@@ -51,11 +78,16 @@ export class LoanPrismaRepository implements LoanRepository {
             },
         });
 
+        await this.updateUserLoanCount(prismaLoan.user_id);
         return this.toDomain(prismaLoan);
     }
 
     async delete(id: string): Promise<void> {
-        await this.prisma.loan.delete({ where: { id } });
+        const loan = await this.prisma.loan.findUnique({ where: { id } });
+        if (loan) {
+            await this.prisma.loan.delete({ where: { id } });
+            await this.updateUserLoanCount(loan.user_id);
+        }
     }
 
     async findById(id: string): Promise<Loan | null> {

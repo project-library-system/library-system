@@ -8,4 +8,5 @@ export interface LoanRepository {
     findAll(): Promise<Loan[]>;
     findByExemplaryId(exemplary_id: string): Promise<Loan | null>;
     findByUserId(user_id: string): Promise<Loan | null>;
+    countActiveByUserId(user_id: string): Promise<number>;
 }

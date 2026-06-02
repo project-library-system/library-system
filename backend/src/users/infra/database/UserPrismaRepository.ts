@@ -59,4 +59,5 @@ export class UserPrismaRepository implements UserRepository {
       where: { id },
     });
   }
+
 }

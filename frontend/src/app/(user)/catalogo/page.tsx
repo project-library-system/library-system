@@ -187,14 +187,22 @@ export default function CatalogoPage() {
         </div>
       ) : (
         <div className="flex flex-wrap gap-6">
-          {filtered.map((book) => (
-            <CardBooks
-              key={book.id}
-              book={book}
-              onRequest={handleRequest}
-              requesting={requestingId === book.id}
-            />
-          ))}
+          {filtered.map((book) => {
+            const bookExemplars = exemplars.filter((ex) => ex.book_id === book.id);
+            const totalExemplars = bookExemplars.length;
+            const availableExemplars = bookExemplars.filter((ex) => ex.status === 'AVAILABLE').length;
+
+            return (
+              <CardBooks
+                key={book.id}
+                book={book}
+                onRequest={handleRequest}
+                requesting={requestingId === book.id}
+                totalExemplars={totalExemplars}
+                availableExemplars={availableExemplars}
+              />
+            );
+          })}
         </div>
       )}
     </div>

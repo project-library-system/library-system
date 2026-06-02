@@ -21,6 +21,7 @@ export type Exemplar = {
   code: string;
   status: 'AVAILABLE' | 'LOANED' | 'MAINTENANCE' | 'LOST';
   created_at?: string;
+  count_loan?: number;
 };
 
 export type UserSafe = {

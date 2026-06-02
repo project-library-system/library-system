@@ -90,7 +90,7 @@ export const api = {
 
   getExemplarById: (id: string) => request<Exemplar>(`/exemplary/${id}`),
 
-  createExemplar: (data: { book_id: string; code: string; status: Exemplar['status'] }) =>
+  createExemplar: (data: { book_id: string; code: string; status: Exemplar['status'], count_loan?: number }) =>
     request<Exemplar>('/exemplary', {
       method: 'POST',
       body: JSON.stringify(data),

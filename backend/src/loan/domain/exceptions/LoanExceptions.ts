@@ -25,3 +25,11 @@ export class InvalidLoanDateException extends LoanDomainException {
         this.name = 'InvalidLoanDateException';
     }
 }
+
+export class LoanLimitExceededException extends LoanDomainException {
+    constructor() {
+        super("Limite de agendamentos excedido! Você só pode ter no máximo 2 agendamentos/empréstimos ativos/pendentes.");
+        this.name = 'LoanLimitExceededException';
+    }
+}
+

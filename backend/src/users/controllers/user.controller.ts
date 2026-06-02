@@ -47,5 +47,6 @@ export class UserController {
   @Put('id')
   async Update(@Param('id') id: string, @Body() data: UpdateUserDto) {
     return await this.updateUser.execute(id, data);
+
   }
 }
