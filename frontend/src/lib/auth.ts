@@ -1,18 +1,31 @@
 import type { UserRole } from '@/types';
 
 const TOKEN_KEY = 'library_token';
-const ROLE_KEY = 'library_role';
 
-export function saveAuth(token: string, role: UserRole) {
+function decodeJwt(token: string): { role: UserRole; sub: string } | null {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    return JSON.parse(jsonPayload);
+  } catch (error) {
+    return null;
+  }
+}
+
+export function saveAuth(token: string) {
   if (typeof window === 'undefined') return;
   localStorage.setItem(TOKEN_KEY, token);
-  localStorage.setItem(ROLE_KEY, role);
 }
 
 export function clearAuth() {
   if (typeof window === 'undefined') return;
   localStorage.removeItem(TOKEN_KEY);
-  localStorage.removeItem(ROLE_KEY);
 }
 
 export function getToken(): string | null {
@@ -21,6 +34,8 @@ export function getToken(): string | null {
 }
 
 export function getRole(): UserRole | null {
-  if (typeof window === 'undefined') return null;
-  return localStorage.getItem(ROLE_KEY) as UserRole | null;
+  const token = getToken();
+  if (!token) return null;
+  const decoded = decodeJwt(token);
+  return decoded ? decoded.role : null;
 }

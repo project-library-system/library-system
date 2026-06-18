@@ -34,10 +34,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(false);
   }, []);
 
-  const login = useCallback(
+const login = useCallback(
     async (email: string, password: string) => {
       const res = await api.signIn(email, password);
-      saveAuth(res.access_token, res.role);
+      // Removemos o res.role daqui
+      saveAuth(res.access_token);
       setToken(res.access_token);
       setRole(res.role);
       router.push(res.role === 'ADMIN' ? '/admin' : '/catalogo');

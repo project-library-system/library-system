@@ -76,7 +76,4 @@ export class SignUpRequestDto {
   @IsEmail()
   email!: string;
 
-  @IsOptional()
-  @IsEnum(UserRole)
-  role?: UserRole;
 }

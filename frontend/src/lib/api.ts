@@ -9,7 +9,7 @@ import type {
   UserSafe,
 } from '@/types';
 
-const API_URL = 'http://localhost:8000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export class ApiError extends Error {
   constructor(
@@ -36,6 +36,7 @@ async function request<T>(
 
   const res = await fetch(`${API_URL}${path}`, {
     ...options,
+    credentials: 'include',
     headers,
   });
 

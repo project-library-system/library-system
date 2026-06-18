@@ -40,16 +40,19 @@ export class BookController {
     }
 
     @Roles(UserRole.ADMIN, UserRole.USER)
+    @Get(':id')
     async findById(@Param('id') id: string) {
         return this.findByIdBooksUseCase.execute(id);
     }
 
     @Roles(UserRole.ADMIN)
+    @Put(':id')
     async update(@Param('id') id: string, @Body() data: UpdateBookDto) {
         return this.updateBookUseCase.execute(id, data);
     }
 
     @Roles(UserRole.ADMIN)
+    @Delete(':id')
     async remove(@Param('id') id: string) {
         return this.deleteBookUseCase.execute(id);
     }

@@ -24,7 +24,10 @@ export class LoanController {
 
     @Roles(UserRole.ADMIN, UserRole.USER)
     @Post()
-    async create(@Body() createLoanDto: CreateLoanDto) {
+    async create(@Body() createLoanDto: CreateLoanDto, @Req() req) {
+        if(req.user.role !== UserRole.ADMIN) {
+            createLoanDto.user_id = req.user.sub;
+        }
         return this.createLoanUseCase.execute(createLoanDto);
     }
 

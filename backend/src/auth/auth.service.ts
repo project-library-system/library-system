@@ -52,7 +52,7 @@ export class AuthService {
     }
 
     const password_hash = await bcrypt.hash(data.password, 10);
-    const role = data.role ?? UserRole.USER;
+    const role = UserRole.USER;
 
     const newUser = User.create({
       name: data.name,
