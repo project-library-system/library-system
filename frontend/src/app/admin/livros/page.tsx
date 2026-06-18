@@ -92,23 +92,24 @@ export default function AdminLivrosPage() {
           <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-5">
             <Plus size={20} className="text-blue-500" /> Novo Livro
           </h2>
-          <form onSubmit={handleCreate} className="flex flex-col gap-3">
+          <form onSubmit={handleCreate} className="flex flex-col gap-3" data-cy="create-book-form">
             {(
               [
-                ['isbn', 'ISBN'],
-                ['name', 'Título'],
-                ['author', 'Autor'],
-                ['publisher', 'Editora'],
-                ['genre', 'Categoria / Gênero'],
-                ['image', 'URL da Capa'],
+                ['isbn', 'ISBN', 'isbn'],
+                ['name', 'Título', 'name'],
+                ['author', 'Autor', 'author'],
+                ['publisher', 'Editora', 'publisher'],
+                ['genre', 'Categoria / Gênero', 'genre'],
+                ['image', 'URL da Capa', 'image'],
               ] as const
-            ).map(([key, label]) => (
+            ).map(([key, label, dataCy]) => (
               <div key={key}>
                 <label className="block text-xs font-semibold text-slate-600 mb-1">{label}</label>
                 <input
                   required={key !== 'image'}
                   className="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   value={form[key]}
+                  data-cy={dataCy}
                   onChange={(e) => setForm({ ...form, [key]: e.target.value })}
                 />
               </div>
@@ -120,6 +121,7 @@ export default function AdminLivrosPage() {
                 required
                 className="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 value={form.year}
+                data-cy="year"
                 onChange={(e) => setForm({ ...form, year: Number(e.target.value) })}
               />
             </div>

@@ -39,7 +39,7 @@ export default function FormLogin() {
           <p className="text-gray-500 mt-2">Faça login para acessar o painel</p>
         </div>
 
-        <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
+        <form className="flex flex-col gap-5" onSubmit={handleSubmit} data-cy="login-form">
           <div>
             <label className="text-sm font-medium text-gray-700">Email</label>
             <div className="flex items-center gap-3 border border-gray-300 rounded-xl px-4 py-3 mt-2 focus-within:border-blue-500">
@@ -51,6 +51,7 @@ export default function FormLogin() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Digite seu email"
                 className="w-full outline-none"
+                data-cy="email"
               />
             </div>
           </div>
@@ -66,6 +67,7 @@ export default function FormLogin() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Digite sua senha"
                 className="w-full outline-none"
+                data-cy="password"
               />
             </div>
           </div>
@@ -80,6 +82,7 @@ export default function FormLogin() {
             type="submit"
             disabled={loading}
             className="bg-blue-500 hover:bg-blue-600 disabled:opacity-60 transition text-white font-semibold py-3 rounded-xl"
+            data-cy="login-button"
           >
             {loading ? 'Entrando...' : 'Entrar'}
           </button>

@@ -19,10 +19,11 @@ const links: {
   label: string;
   icon: typeof LayoutDashboard;
   exact?: boolean;
+  dataCy?: string;
 }[] = [
   { href: '/admin', label: 'Painel', icon: LayoutDashboard, exact: true },
   { href: '/admin/emprestimos', label: 'Empréstimos', icon: Handshake },
-  { href: '/admin/livros', label: 'Livros', icon: Book },
+  { href: '/admin/livros', label: 'Livros', icon: Book, dataCy: 'book-link' },
   { href: '/admin/exemplares', label: 'Exemplares', icon: Layers },
   { href: '/admin/usuarios', label: 'Usuários', icon: Users },
 ];
@@ -45,12 +46,13 @@ export default function SidebarAdmin() {
       {/* Navigation */}
       <nav className="flex-1 p-4 mt-2 overflow-y-auto">
         <ul className="flex flex-col gap-1">
-          {links.map(({ href, label, icon: Icon, exact }) => {
+          {links.map(({ href, label, icon: Icon, exact, dataCy }) => {
             const active = exact ? pathname === href : pathname.startsWith(href);
             return (
               <li key={href}>
                 <Link
                   href={href}
+                  data-cy={dataCy}
                   className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium text-sm ${
                     active
                       ? 'bg-indigo-500 text-white shadow-md shadow-indigo-500/30'
